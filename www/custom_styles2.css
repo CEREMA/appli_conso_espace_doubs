@@ -1,0 +1,450 @@
+ #mentions:hover {
+     text-decoration-line: underline;
+}
+
+
+#app_navbar [data-value='Mentions légales'] {
+    visibility: hidden;
+    width: 0px;
+}
+
+
+
+
+
+#tabbat:hover {
+    color:black;
+}
+
+
+body {
+  background-color: white;
+  font-size:1.3em;
+}
+
+/* -- NAVBAR -- */
+.container-fluid {
+     
+
+    color: black;
+    background-color: white;
+    height: 100px;
+
+}
+
+.navbar-header {
+    width: 400px;
+    height: 70px;
+background-image: url(logo_app222.png);
+ background-position: left 60% bottom 45%;
+    background-repeat: no-repeat;
+	background-size: auto;
+    
+    padding-top:5px;
+    margin-top:5px;
+
+padding-right: 30px;
+    padding-left: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #f07d00;
+}
+
+.navbar-default .navbar-toggle{
+    background-color: white;
+}
+
+
+.navbar-default .navbar-toggle:hover {
+    background-color: white;
+}
+
+
+ul#app_navbar {
+
+  background-color:white;
+    min-height:25px !important;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #464749;
+    font-weight:normal;
+    background-color: white;
+
+
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #f07d00;
+    font-weight:normal;
+    border-bottom: 3px solid #f07d00;
+    background-color: white;
+    
+
+}
+
+.navbar-default .navbar-nav>.active>a:hover {
+    background-color: white;
+}
+
+
+.navbar-default .navbar-nav>.active>a {
+    color: #f07d00;
+    background-color: white;
+}
+
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #f07d00;
+    background-color: white;
+}
+
+
+
+.navbar-default {
+    color: #464749;
+    font-size:1.3em;
+    font-weight: normal;
+}
+
+.navbar-brand {
+    color: #464749;
+    font-size:1.3em;
+    font-weight: normal;
+}
+
+
+
+
+/* -- VISUEL DU HAUT ---- */
+
+/* -- VISUEL DU HAUT ---- */
+
+#bandeau_visuel {
+
+    
+    position: relative;
+    color: white;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-top: -30px;
+    background-image: url(Arc_et_Senans.jpg);
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+    height: 420px;
+    padding-left: 15%;
+    padding-right: 55%;
+    padding-top: 3%;
+}
+
+
+
+
+.voir_container1 {
+    padding-top: 30px;
+    height: 150px;
+    color: white;
+    padding-bottom: 30px;
+    text-align: center;
+    background-color: rgba(23, 122, 143, 0.8);
+    border-radius: 0px;
+    display: block;
+    position: relative;
+}
+
+#chargement  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+
+}
+
+#chargement:hover  {
+    background-color: white;
+        color : black;
+            border-color: white;
+        border-radius: 100px;
+}
+
+#chargement2  {
+    align-content: center;
+    background-color: rgba(23, 122, 143, 0.8);
+        color : white;
+        border-radius: 100px;
+    border-color: rgba(23, 122, 143, 0.8);
+}
+
+#chargement2:hover  {
+    align-content: center;
+    background-color: white;
+        color : rgba(23, 122, 143, 0.8);
+        border-radius: 100px;
+            border-color: rgba(23, 122, 143, 0.8);
+}
+
+#chargement3  {
+    align-content: center;
+    background-color: rgba(23, 122, 143, 0.8);
+        color : white;
+    border-color: rgba(23, 122, 143, 0.8);
+        border-radius: 100px;
+}
+
+#chargement3:hover  {
+    align-content: center;
+    background-color: white;
+        color : rgba(23, 122, 143, 0.8);
+        border-color: rgba(23, 122, 143, 0.8);
+        border-radius: 100px;
+}
+
+.voir_container2 {
+    padding-top: 30px;
+    height: 150px;
+    color: white;
+    padding-bottom: 30px;
+    text-align: center;
+    background-color: rgba(23, 122, 143, 0.85);
+    border-radius: 0px;
+    display: block;
+    position: relative;
+}
+
+#page1  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+}
+
+#page1:hover  {
+    background-color: white;
+        color : black;
+        border-radius: 100px;
+                border-color: white;
+}
+
+#page2  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+}
+
+#page2:hover  {
+    background-color: white;
+        color : black;
+        border-radius: 100px;
+                border-color: white;
+}
+
+#page3  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+}
+
+#page3:hover  {
+    background-color: white;
+        color : black;
+        border-radius: 100px;
+                border-color: white;
+}
+
+.voir_container3 {
+    padding-top: 30px;
+    height: 150px;
+    color: white;
+    padding-bottom: 30px;
+    text-align: center;
+    background-color: rgba(23, 121, 143, 0.9);
+    border-radius: 0px;
+    display: block;
+    position: relative;
+}
+
+#focus  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+}
+
+#focus:hover  {
+    background-color: white;
+        color : black;
+        border-radius: 100px;
+                border-color: white;
+}
+
+#focus2.btn.btn-default.action-button.shiny-bound-input  {
+    background-color: rgba(117, 190, 218, 0.0);
+    color:white;
+        border-radius: 100px;
+
+}
+
+#focus2.btn.btn-default.action-button.shiny-bound-input:hover  {
+    background-color: white;
+        color : black;
+        border-radius: 100px;
+                border-color: white;
+}
+
+.voir_container4 {
+    text-align:center;
+    color:white;
+	padding-top:20px; 
+    padding-bottom:30px;
+    margin-left:-15px;margin-right:-15px;
+    background-color:rgba(255, 0, 0, 1);
+}
+
+.voir_container5 {
+    padding-top: 30px;
+    height: 150px;
+    background-color: white;
+    color: white;
+    padding-bottom: 30px;
+    text-align: center;
+    background-color: rgba(23, 122, 143, 0.8);
+    border-radius: 0px;
+    display: block;
+    position: relative;
+}
+
+.voir_container6{
+    padding-top: 30px;
+    height: 150px;
+    background-color: rgba(51, 71, 91, 1);
+    color: white;
+    padding-bottom: 30px;
+    text-align: center;
+    background-color: rgba(51, 71, 91, 1);
+    border-radius: 100px;
+    display: block;
+    position: relative;
+}
+
+.voir_container7 {
+                text-align:center;
+                color:rgba(51, 71, 91, 1);
+padding-top:50px; 
+    padding-bottom:60px;
+                margin-left:-15px;margin-right:-15px;
+                background-color:rgba(186, 223, 220, 1)
+}
+
+
+
+#methodo {
+    background-color: rgba(117, 190, 218, 0.0);
+        color : white;
+        border-radius: 100px;
+
+}
+
+#methodo:hover  {
+        background-color: white;
+        color : black;
+        border-radius: 100px;
+
+}
+
+#ff {
+    background-color: rgba(51, 71, 91, 1);
+        color : white;
+        border-color: rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+
+}
+
+#ff:hover  {
+    border-color: rgba(51, 71, 91, 1);
+                background-color:rgba(173, 193, 71, 1);
+        color :  rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+}
+
+
+
+
+#cerema {
+    background-color: rgba(51, 71, 91, 1);
+        color : white;
+        border-color: rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+
+}
+
+#cerema:hover  {
+                background-color:rgba(173, 193, 71, 1);
+        color :  rgba(51, 71, 91, 1);
+        border-color: rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+
+}
+
+#contact {
+    background-color: rgba(51, 71, 91, 1);
+        color : white;
+        border-color: rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+
+}
+
+#contact:hover  {
+                background-color:rgba(173, 193, 71, 1);
+        color :  rgba(51, 71, 91, 1);
+        border-color: rgba(51, 71, 91, 1);
+        border-radius: 100px;
+
+
+}
+
+.box.box-solid.box-primary>.box-header {
+                             color:#fff;background:#ee7f00
+                             }
+                             .box.box-solid.box-primary {
+                             border-bottom-color:#ee7f00;
+                             border-left-color:#ee7f00;
+                             border-right-color:#ee7f00;
+                            border-top-color:#ee7f00;
+                             }
+                             .box.box-solid.box-success >.box-header {
+                             color:black;border-bottom-color:#fff;
+                             border-left-color:#fff;border-right-color:#fff;
+                            border-top-color:#ee7f00;background:none
+                             }
+                             .box.box-solid.box-success {
+                             border-bottom-color:#fff;
+                             border-left-color:#fff;
+                             border-right-color:#fff;
+                            border-top-color:#ee7f00;}
+                             .box.box-solid.box-success > .box-header .btn {
+                             background:#fff
+                            }
+                            .box.box-solid.box-success > .box-header .fa {                            color:grey;
+                             background:transparent
+                             }
+
+.col-sm-10.col-sm-offset-1{
+    color: #212529 ;
+    text-align:center;
+    font-size:1.5em;
+
+}
+
+.progress-bar{background-color:#bdea77;}
+.progress-bar-danger {background-color:#ee7f00;}
