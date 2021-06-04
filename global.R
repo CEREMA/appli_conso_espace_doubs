@@ -1,6 +1,6 @@
 #
 # APPLI DE VISUALISATION DES ENVELOPPES BATIES DU DOUBS
-# 
+# version mise en ligne le 3 juin 2021
 #
 
 library(sf)
