@@ -16,7 +16,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       fluidRow(
-        column(10, offset = 1, div(style="height:200px;"),
+        column(12, div(style="height:200px;"),
                box(width = 12, title = "sélectionner une commune", background = 'orange',
                    # Liste déroulante pour choix des communes
                    selectInput(inputId = "codeinsee",
@@ -48,19 +48,18 @@ ui <- fluidPage(
     
     mainPanel(
       navbarPage (
-        id = "app_navbar",
-        selected = NULL,
-        position = c("fixed-top"),
-        inverse = FALSE,
-        collapsible = T,
-        fluid = T,
-        responsive = T,
-        theme = NULL,
-        tags$link(rel = "stylesheet", type = "text/css", href = "custom_styles2.css"),
-        windowTitle = "Artificialisation par le bâti dans le Doubs",
-        header = tagList(
-          useShinydashboard()
-        ),
+         id = "app_navbar",
+         selected = NULL,
+         inverse = FALSE,
+         collapsible = T,
+         fluid = T,
+         responsive = T,
+         theme = NULL,
+         tags$link(rel = "stylesheet", type = "text/css", href = "custom_styles2.css"),
+         windowTitle = "Dynamiques d'artificialisation par le bâti des territoires du Doubs",
+         header = tagList(
+           useShinydashboard()
+         ),
         
         
         # ---- PAGE D'ACCUEIL -----------------------------------
@@ -73,7 +72,7 @@ ui <- fluidPage(
                  mobileDetect('isMobile'),
                  
                  fluidRow(
-                   fluidRow(column(10, offset=1,div(style="height:100px;"))
+                   fluidRow(column(12, offset=1,div(style="height:70px;"))
                    ),
                    
                    ## BANDEAU DU HAUT
@@ -95,7 +94,7 @@ ui <- fluidPage(
                                  div(class="voir",""), style="margin-top:5px;")),
                    
                    column(4, div(class="voir_container3",
-                                 tags$span(tags$b("Comparaison commune et territoire"), style="font-size:1.5em"),
+                                 tags$span(tags$b("Comparaison commune / territoire"), style="font-size:1.5em"),
                                  tags$br(),
                                  tags$br(),
                                  actionButton("page3", "Voir"),
@@ -153,12 +152,8 @@ ui <- fluidPage(
                  
                  # resultats
                  fluidRow(
-                   column(12, offset = 1,
-                          br(),
-                          br(),
-                          br(),
-                          br(),
-                          br(),
+                   column(12,
+
                           leafletOutput("carte", height = 700),
                           tags$br(),
                           box(
@@ -168,26 +163,30 @@ ui <- fluidPage(
                             height = 30,
                           ),
                           tags$br(),
-                          column(width = 4, 
+                          div(class = "col-sm-12 col-md-6 col-lg-4", 
                                  fluidRow(
                                    uiOutput("indicateur11"), 
                                    uiOutput("indicateur12"),
                                    uiOutput("indicateur13")
                                  )
                           ),
-                          box(
-                            title = "progression de la surface artificialisée par le bâti",
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "barres12", height = 300), 
-                            width = 4
+                          div(class = "col-sm-12 col-md-6 col-lg-4", 
+                            box(
+                              title = "progression de la surface artificialisée par le bâti",
+                              solidHeather = TRUE,
+                              status = "primary",
+                              plotlyOutput(outputId = "barres12", height = 300), 
+                              width = '100%'
+                            )
                           ),
-                          box(
-                            title = "évolution comparée SAB et population",
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "lines11", height = 300), 
-                            width = 4
+                          div(class = "col-sm-12 col-md-6 col-lg-4", 
+                            box(
+                              title = "évolution comparée SAB et population",
+                              solidHeather = TRUE,
+                              status = "primary",
+                              plotlyOutput(outputId = "lines11", height = 300), 
+                              width = '100%'
+                            )
                           )
                           
                    )
@@ -198,14 +197,22 @@ ui <- fluidPage(
         
         tabPanel("Indicateurs territoriaux",
                  
-                 # resultats
                  fluidRow(
-                   column(12, offset = 1,
-                          br(),
-                          br(),
-                          br(),
-                          br(),
-                          br(),
+                   column(12,
+                          
+                          # sélection de l'indicateur
+                          box(width = 12, title = "sélectionner l'indicateur à représenter", background = 'olive',    
+                              selectInput(inputId = "indicateur",
+                                          label = "",
+                                          choices = ind,
+                                          multiple = FALSE,
+                                          selected = ind[1]
+                              )
+                          ),
+                          
+                          # resultats
+                          
+                          
                           leafletOutput("carteter", height = 700),
                           tags$br(),
                           box(
@@ -215,115 +222,114 @@ ui <- fluidPage(
                             height = 30,
                           ),
                           tags$br(),
-                          column(width = 4, 
+                          div(class = "col-sm-12 col-md-6 col-lg-4", 
                                  fluidRow(
                                    uiOutput("indicateur21"), 
                                    uiOutput("indicateur22"),
                                    uiOutput("indicateur23"),
                                  )
                           ),
-                          box(
-                            title = "progression de la surface artificialisée par le bâti",
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "barres22", height = 300), 
-                            width = 4
+                          div(class = "col-sm-12 col-md-6 col-lg-4",
+                            box(
+                              title = "progression de la surface artificialisée par le bâti",
+                              solidHeather = TRUE,
+                              status = "primary",
+                              plotlyOutput(outputId = "barres22", height = 300), 
+                              width = '100%'
+                            )
                           ),
-                          box(
-                            title = "évolution comparée SAB et population",
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "lines21", height = 300), 
-                            width = 4
+                          div(class = "col-sm-12 col-md-6 col-lg-4",
+                            box(
+                              title = "évolution comparée SAB et population",
+                              solidHeather = TRUE,
+                              status = "primary",
+                              plotlyOutput(outputId = "lines21", height = 300), 
+                              width = '100%'
+                            )
                           )
-                          # tags$br(),
-                          # box(
-                          #   title = "tableau des indicateurs communaux",
-                          #   solidHeather = TRUE,
-                          #   status = "primary",
-                          #  fluidRow(style = "font-size: 60% ; width: 60%", dataTableOutput('tableauindic'))
-                          # )
+
                    )
                  )
         ),
         
         ## --- COMPARAISON COMMUNE / TERRITOIRE
         
-        tabPanel("Comparaison entre commune et territoire",
+        tabPanel("Comparaison commune / territoire",
                  
                  # résultats
                  fluidRow(
-                   column(12, offset = 1,
-                          br(),
-                          br(),
-                          br(),
-                          br(),
-                          br(),
-                          br(),
-                          box(
-                            title = ind1,
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge31", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = textOutput("nomind2"),
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge32", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = ind3,
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge33", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = textOutput("nomind4"),
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge34", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = ind5,
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge35", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = ind6,
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge36", height = 300), 
-                            width = 4
-                          ),
-                          box(
-                            title = ind7,
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge37", height = 300), 
-                            width = 4
-                          ),
-                          # box(
-                          #   title = ind8,
-                          #   solidHeather = TRUE,
-                          #   status = "primary",
-                          #   plotlyOutput(outputId = "gauge38", height = 300), 
-                          #   width = 4
-                          # ),
-                          box(
-                            title = paste0(ind9, " entre 2012 et 2017"),
-                            solidHeather = TRUE,
-                            status = "primary",
-                            plotlyOutput(outputId = "gauge39", height = 300), 
-                            width = 4
-                          )
-                   )
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = ind1,
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge31", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = textOutput("nomind2"),
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge32", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = textOutput("nomind3"),
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge33", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = ind4,
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge34", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = ind5,
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge35", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = ind6,
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge36", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = ind7,
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge37", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   )),
+                   div(class = "col-sm-12 col-md-6 col-lg-4",
+                   box(
+                     title = paste0(ind8, " entre 2012 et 2017"),
+                     solidHeather = TRUE,
+                     status = "primary",
+                     plotlyOutput(outputId = "gauge38", height = 300), 
+                     width = '100%',
+                     height = '300px'
+                   ))
                  )
         ),
         
@@ -365,7 +371,7 @@ ui <- fluidPage(
       border-top : 0.2px solid #d2d2d2;
       padding-top: 10px;
       height: 30px;
-      margin-top: 0px;
+      margin-top: 50px;
                  "
         ),
         tags$head(tags$script(src = "./www/test.js"))
