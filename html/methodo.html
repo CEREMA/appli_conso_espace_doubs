@@ -26,18 +26,26 @@
         <div class="separation"><hr></div>
         <br>
         <p style="text-align: left;">
-			Les surfaces artificialisées par le bâti (au 31/12 de chaque année) ont été réalisées selon la méthode suivante :
+			Les surfaces artificialisées par le bâti (au 01/01 de chaque année) ont été réalisées selon la méthode suivante :
 			<ol>
-				<li><b>constitution d’une couche de bâtiments</b> issue d’une combinaison entre la BDParcellaire® 2017 (IGN©) 
-				et le PCI Vecteur du 02/01/2018 (DGFiP), l’objectif étant que cette couche concorde au maximum avec les données sources 
-				des parcelles des <a href = https://datafoncier.cerema.fr/donnees/fichiers-fonciers> Fichiers Fonciers</a> 2017.
+				<li><b>constitution de deux couches de bâtiments</b> issues de la BDParcellaire® 2017 (IGN©) 
+				et du PCI Vecteur du 02/01/2018 (DGFiP), avec affectation des identifiants parcellaires à chaque objet « bâtiment ».
+				
+				<li><b>croisement de ces deux couches avec les parcelles de la Table Unifiée Parcellaire (TUP) </b>
+				des <a href = https://datafoncier.cerema.fr/donnees/fichiers-fonciers> Fichiers Fonciers</a> 2017 et affectation d'attributs des Fichiers Fonciers à chaque bâtiment,
+				notamment, si elles sont connues, la source de la géométrie de la parcelle, l'année de construction du local le plus ancien et celle du plus récent de la TUP. 
+				La TUP est constituée de parcelles simples et de parcelles regroupées en unités foncières ou en propriété divisée en lots multi-parcellaires.</li>				
+				
+				<li><b>comparaisos des bâtiments  des couches BDParcellaire® et PCI Vecteur  complétées et constitution d’une couche composite de bâtiments</b>,
+				l’objectif étant que cette couche concorde au maximum avec les données sources des parcelles des Fichiers Fonciers 2017.
 				Lorsqu’un bâtiment est recensé dans les deux référentiels mais que son emprise varie fortement, seul celui du PCI Vecteur est retenu. 
 				Il est alors considéré comme construit entre la date la plus récente de l’étendue temporelle de la BDParcellaire®2017 (2014)
-				et la date la plus récente de l’étendue temporelle du PCI Vecteur (2017)</li>
-				<li><b>croisement de ces bâtiments avec les parcelles de la Table Unifiée Parcellaire (TUP) </b>des Fichiers Fonciers 2017. 
-				Cette TUP est constituée de parcelles simples et de parcelles regroupées en unités foncières ou en propriété divisée en lots multi-parcellaires.</li>
+				et la date la plus récente de l’étendue temporelle du PCI Vecteur (2017). 
+				Il peut donc ne pas avoir été pris en compte dans la surface artificialisée par le bâti au 01/01/2017</li>
+
 				<li><b>datation du bâti : </b>pour tous les bâtiments d’une même TUP, affectation – lorsqu’elle est connue – 
-				de l’année de construction du local le plus ancien à l’intérieur de cette TUP. <b> Attention toutefois, certains bâtiments ne peuvent pas être datés avec cette méthode :</b>
+				de l’année de construction du local le plus ancien à l’intérieur de cette TUP. 
+				<b> Attention toutefois, certains bâtiments ne peuvent pas être datés avec cette méthode :</b>
 					<ul>
 						<li>date non connue dans les Fichiers Fonciers 2017 (si cette donnée « datation » est bien renseignée dans les Fichiers Fonciers depuis 1970 pour l’habitat, 
 						elle l’est seulement depuis 2003 pour l’activité économique.)</li>
@@ -45,7 +53,7 @@
 						(bâtiments publics, militaires, agricoles, constructions légères…)</li>
 						<li>le bâtiment n’intersecte aucune TUP.</li>
 					</ul>
-				Les bâtiments qui auraient été démolis sur la période étudiée (1968 à 2016) n’ont pas pu être pris en compte dans la représentation. De plus, certains bâtiments de 2016 
+				Les bâtiments qui auraient été démolis sur la période étudiée (1968 à 2017) n’ont pas pu être pris en compte dans la représentation. De plus, certains bâtiments de 2016 
 				peuvent ne pas encore avoir été pris en compte dans les Fichiers Fonciers 2017.</li>
 				<li><b>pour un millésime N, génération d’une enveloppe bâtie :</b> application d’un tampon de 40m autour des bâtiments dont la date de construction estimée 
 				est ≤ N, union des enveloppes obtenues puis érosion de 30m. La surface artificialisée par le bâti non daté correspond à la partie résiduelle non datée 
@@ -69,6 +77,15 @@
 			<b>Occupants potentiels du territoire :</b> population communale + nombre d'emplois sur la commune + nombre de résidences secondaires sur la commune. Cet indicateur permet d'évaluer
 			le nombre d'occupants que peut accueillir une commune, que ce soit des résidents principaux, des travailleurs ou des résidents secondaires.
 		</p>
+		<p style="text-align: left;">
+			<b>Nombre de nouveaux ménages par ha artificialisé pour l'habitat :</b> (nombre de ménages en 2017 - nombre de ménages en 2012) / 
+			flux d'artificialisation pour l'habitat entre 2012 et 2017. 
+			Cet indicateur est issu du <a href = https://artificialisation.biodiversitetousvivants.fr/>Portail national de l'artificialisation des sols : </a>
+			Il vise à évaluer l'efficacité de l'urbanisation sur un territoire. Il n'est toutefois pas toujours facile à interpréter, 
+			notamment sur les territoires où le nombre de ménages stagne, voire décroit (l'indicateur est alors négatif !)
+			La méthode de mesure des flux d'artificialisation, qui repose sur les Fichiers Fonciers, est détaillée sur le portail national.
+		</p>
+		
 		<p style="text-align: left;">
 			<b>Années de référence :</b> les années de référence proposées correspondent aux années de recensement de la population de l'INSEE (1968, 1975, 1982, 1990, 1999) complétées par les
 			années 2007, 2012 et 2017 maintenant que le recensement se fait selon une méthode glissante. L'INSEE met à disposition des données communales de population et de logement pour ces années là.
