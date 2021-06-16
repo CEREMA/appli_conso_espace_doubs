@@ -13,7 +13,7 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$page3, {
-    updateNavbarPage(session, "app_navbar", selected = "Comparaison entre commune et territoire")
+    updateNavbarPage(session, "app_navbar", selected = "Comparaison commune / territoire")
   })
   
   observeEvent(input$methodo, {
@@ -32,7 +32,7 @@ shinyServer(function(input, output, session) {
     fluidRow(id="bandeau_visuel",
              fluidRow(
                column(12, offset=0,
-                      fluidRow(tags$p("Observatoire départemental de la consommation d'espaces", style="font-size:3em;"))
+                      fluidRow(tags$p("Dynamiques d'artificialisation par le bâti des territoires du Doubs", style="font-size:3em;"))
                       )
              )
     ) 
@@ -52,26 +52,15 @@ shinyServer(function(input, output, session) {
     com_indic = NULL,
     zone_date = NULL,
     zone_nondate = NULL, 
-    zone_indic = NULL, 
-    pal1 = NULL,
-    pal2 = NULL,
-    pal3 = NULL,
-    pal4 = NULL,
-    pal5 = NULL,
-    pal6 = NULL,
-    pal7 = NULL,
-#    pal8 = NULL,
-    pal9 = NULL,
+    zone_indic = NULL,
     com_tempo = NULL,
     zone_tempo = NULL,
     zone_indictempo = NULL,
     tempo = NULL,
     ind2 = NULL,
-    ind4 = NULL,
-#    ind8 = NULL, 
+    ind3 = NULL,
     comind2 = NULL,
-    comind4 = NULL
-#    comind8 = NULL
+    comind3 = NULL
     
   )
   
@@ -124,17 +113,6 @@ shinyServer(function(input, output, session) {
       v$zone_indic <- dindic %>% filter(insee_com %in% comzone1$insee_com)
       v$zone_tempo <- dtempo %>% filter(insee_com %in% comzone1$insee_com)
       
-      # palettes de couleur pour la carte dynamique
-      v$pal1 <- colorBin("YlOrRd", domain = v$zone_indic$sartif, bins = classIntervals(v$zone_indic$sartif, style = "jenks", n = 6)$brks)
-
-      v$pal3 <- colorBin("YlOrRd", domain = v$zone_indic$partif, bins = 5)
-
-      v$pal5 <- colorBin("YlOrRd", domain = v$zone_indic$cos, bins = 5)
-      v$pal6 <- colorBin("YlOrRd", domain = v$zone_indic$sartif_par_hab, bins = 5)
-      v$pal7 <- colorBin("YlOrRd", domain = v$zone_indic$sartif_par_op, bins = 5)
-      
-      v$pal9 <- colorBin("YlOrRd", domain = v$zone_indic$sartif_evo_men, bins = 5)
-
     }
   )
   
@@ -151,43 +129,36 @@ shinyServer(function(input, output, session) {
   
   # indicateurs qui dépendent à la fois de l'année de référence et du zonage
   
+  # observeEvent(
+  #   c(input$annee, input$code_insee), {
+  #     v$comind2 <- v$com_indic$sartif - v$com_tempo[v$com_tempo$annee == input$annee, "stot"][1]
+  #     v$comind3 <- 100*v$comind2 / v$com_tempo[v$com_tempo$annee == input$annee, "stot"][1]
+  #   }
+  # )
+  
   observeEvent(
-    c(input$annee, input$id_zone), {
+    c(input$annee, input$id_zone, input$code_insee), {
       
       v$zone_indictempo <- v$zone_indic %>%
-        dplyr::left_join(v$tempo, by = NULL, copy = FALSE)
+        dplyr::left_join(v$tempo, by = NULL, copy = FALSE) %>%
+        mutate(sartif_evo = sartif - stot) %>%
+        mutate(partif_evo = 100*(sartif - stot)/ stot)
       
       v$ind2 <- v$zone_indictempo %>%
-        mutate(sartif_evo = sartif - stot) %>%
         select(nom_com, sartif_evo)
       
-      v$pal2 <- colorBin("YlOrRd", domain = v$ind2$sartif_evo, bins = classIntervals(v$ind2$sartif_evo, style = "jenks", n = 6)$brks)
-      
-      
-      v$ind4 <- v$zone_indictempo %>%
-        mutate(partif_evo = (sartif - stot)/ stot) %>%
+      v$ind3 <- v$zone_indictempo %>%
         select(nom_com, partif_evo)
       
-      v$pal4 <- colorBin("YlOrRd", domain = v$ind4$partif_evo, bins = 5)
-      
-      # v$ind8 <- v$zone_indictempo %>%
-      #   mutate(sartif_evo_par_op = 10000 * (sartif - stot)/(occpot17 - ocpot)) %>%
-      #   mutate(sartif_evo_par_op = ifelse(sartif_evo_par_op > 0, sartif_evo_par_op, NA)) %>%
-      #   select(nom_com, sartif_evo_par_op)
-      # 
-      # v$pal8 <- colorBin("YlOrRd", domain = v$ind8$sartif_evo_par_op)
-      
-    }
-  )
-  
-  observeEvent(
-    c(input$annee, input$code_insee), {
       v$comind2 <- v$com_indic$sartif - v$com_tempo[v$com_tempo$annee == input$annee, "stot"][1]
-      v$comind4 <- v$comind2 / v$com_tempo[v$com_tempo$annee == input$annee, "stot"][1]
-#      v$comind8 <- 10000 * v$comind2 / (v$com_indic$occpot17 - v$com_tempo[v$com_tempo$annee == input$annee, "ocpot"][1])
+      v$comind3 <- 100*v$comind2 / v$com_tempo[v$com_tempo$annee == input$annee, "stot"][1]
+      
     }
   )
   
+
+  
+
   
 ## --------------- OUTPUTS COMMUNE -----------------------------------------------
   
@@ -305,13 +276,13 @@ shinyServer(function(input, output, session) {
     leaflet() %>% 
       fitBounds(lat1 = v$boite$ymin, lng1 = v$boite$xmin, lat2 = v$boite$ymax, lng2 = v$boite$xmax) %>%
       addTiles(group = "OSM") %>%
-#      addProviderTiles(providers$GeoportailFrance.ignMaps, group = "IGN")%>%
-      addProviderTiles(providers$Stamen.Toner, group = "Stamen") %>%
+      addProviderTiles(providers$GeoportailFrance.orthos, group = "orthophoto IGN") %>%
+      addProviderTiles(providers$Stamen.TonerBackground, group = "OSM (NB)") %>%
       addMapPane("envref", zIndex = 420) %>%
       addMapPane("envact", zIndex = 410) %>%
       addMapPane("bati", zIndex = 430) %>%
       addLayersControl(
-        baseGroups = c("OSM", "IGN", "Stamen"),
+        baseGroups = c("OSM", "orthophoto IGN", "OSM (NB)"),
         overlayGroups = c(gr1, gr2, gr5, gr3, gr4),
         options = layersControlOptions(collapsed = TRUE)
       ) %>%
@@ -349,7 +320,8 @@ shinyServer(function(input, output, session) {
                   fillOpacity = 0.7, 
                   group = gr4, 
                   options = pathOptions(pane = "bati")
-      )
+      )%>%
+      addScaleBar(position = 'bottomleft', options = scaleBarOptions(imperial = FALSE))
       
   })
   
@@ -517,15 +489,21 @@ shinyServer(function(input, output, session) {
   
   # carte leaflet territoire de référence
   
+  # préparation data pour carte leaflet
+  datas <- reactive({ v$zone_indictempo %>%
+      select(c("nom_com", vars[as.numeric(input$indicateur)])) %>%
+      rename(indic = vars[as.numeric(input$indicateur)] )
+  })
+    
+
+  
   
   # fond de carte et légende
   
-  gr11 <- "territoire de référence"
-
-  
+ 
   output$carteter <- renderLeaflet({
     leaflet() %>% 
-      # gère la position en arrière plan des couches région, départements, PNR, EPCI, SCOT
+      # gère la position en arrière plan de la couche des communes
       addMapPane("tuile_com", zIndex = 300) %>%
       
       # couche des communes
@@ -538,201 +516,56 @@ shinyServer(function(input, output, session) {
         group = 'communes',
         options = pathOptions(pane = "tuile_com")
       )%>%
-#      setView(lng = 6, lat = 47, zoom = 10) %>%
       addTiles(group = "OSM") %>%
       addLayersControl(
-        baseGroups = c(i1, i2, i3, i4, i5, i6, i7, i9),
-        overlayGroups = c("communes", "OSM"),
+        overlayGroups = c("intervalles égaux", "quantiles"),
+        baseGroups = c("communes", "OSM"),
         options = layersControlOptions(collapsed = TRUE)
       ) %>%
-      addPolygons(data = req(v$zone_indic),
+      addPolygons(data = datas(),
                    label = ~nom_com,
-                   popup = ~paste0("<b>", nom_com, "</b><br>", ind1, " : ", round(sartif), " ha"),
-                   fillColor = ~v$pal1(sartif),
+                   popup = ~paste0("<b>", nom_com, "</b><br>", names(ind[as.numeric(input$indicateur)]), " : ", round(indic), unites[as.numeric(input$indicateur)]),
+                   fillColor = colorBin("YlOrRd", domain = datas()$indic, bins = 5)(datas()$indic),
                    color = 'white',
                    weight = 1,
                    fillOpacity = 0.8,
-                   group = i1
-                   ) %>%
-      addPolygons(data = req(v$ind2),
+                   group = 'intervalles égaux'
+                   )  %>%
+       addLegend(pal = colorBin("YlOrRd", domain = datas()$indic, bins = 5),
+                 values = datas()$indic,
+                 position = "bottomright",
+                 title = ifelse(input$indicateur %in% c('2', '3'),
+                   paste0(names(ind[as.numeric(input$indicateur)]), " entre ", input$annee," et 2017"),             
+                   names(ind[as.numeric(input$indicateur)])
+                   ),
+                 labFormat = labelFormat(suffix = unites[as.numeric(input$indicateur)], big.mark = " "),
+                 group = 'intervalles égaux'
+       ) %>%
+      addPolygons(data = datas(),
                   label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind2, " entre ", input$annee, " et 2017 : ", round(sartif_evo), " ha"),
-                  fillColor = ~v$pal2(sartif_evo),
+                  popup = ~paste0("<b>", nom_com, "</b><br>", names(ind[as.numeric(input$indicateur)]), " : ", round(indic), unites[as.numeric(input$indicateur)]),
+                  fillColor = colorQuantile("YlOrRd", domain = datas()$indic, n = 5)(datas()$indic),
                   color = 'white',
                   weight = 1,
                   fillOpacity = 0.8,
-                  group = i2
-      ) %>%
-      addPolygons(data = req(v$zone_indic),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind3, " : ", round(100 * partif, 1), " %"),
-                  fillColor = ~v$pal3(partif),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i3
-      ) %>%
-      addPolygons(data = req(v$ind4),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind4, " entre ", input$annee, " et 2017 : ", round(100 * partif_evo, 1), " %"),
-                  fillColor = ~v$pal4(partif_evo),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i4
-      ) %>%
-      addPolygons(data = req(v$zone_indic),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind5, " : ", round(100 * cos), " %"),
-                  fillColor = ~v$pal5(cos),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i5
-      ) %>%
-      addPolygons(data = req(v$zone_indic),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind6, " : ", round(sartif_par_hab), " m2"),
-                  fillColor = ~v$pal6(sartif_par_hab),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i6
-      ) %>%    
-      addPolygons(data = req(v$zone_indic),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind7, " : ", round(sartif_par_op), " m2"),
-                  fillColor = ~v$pal7(sartif_par_op),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i7
-      ) %>%
-      # addPolygons(data = req(v$ind8),
-      #             label = ~nom_com,
-      #             popup = ~paste0("<b>", nom_com, "</b><br>", ind8, " : ", round(sartif_evo_par_op), " m2"),
-      #             fillColor = ~v$pal8(sartif_evo_par_op),
-      #             color = 'white',
-      #             weight = 1,
-      #             fillOpacity = 0.8,
-      #             group = i8
-      # ) %>%
-      addPolygons(data = req(v$zone_indic),
-                  label = ~nom_com,
-                  popup = ~paste0("<b>", nom_com, "</b><br>", ind9, " entre 2012 et 2017 : ", round(sartif_evo_men), " ménages"),
-                  fillColor = ~v$pal9(sartif_evo_men),
-                  color = 'white',
-                  weight = 1,
-                  fillOpacity = 0.8,
-                  group = i9
-      ) %>%
-      addLegend(pal = v$pal1, 
-                values = v$zone_indic$sartif,
+                  group = 'quantiles'
+      )  %>%
+      addLegend(pal = colorQuantile("YlOrRd", domain = datas()$indic, n = 5),
+                values = datas()$indic,
                 position = "bottomright",
-                title = ind1,
-                group = i1,
-                className = paste0("info legend ", i1),
-                labFormat = labelFormat(suffix = " ha", big.mark = " ")
+                title = ifelse(input$indicateur %in% c('2', '3'),
+                               paste0(names(ind[as.numeric(input$indicateur)]), " entre ", input$annee," et 2017"),             
+                               names(ind[as.numeric(input$indicateur)])
+                ),
+                labFormat = function(type, cuts, p) {
+                  n = length(cuts)
+                  paste0(as.integer(cuts)[-n], " &ndash; ", as.integer(cuts)[-1], unites[as.numeric(input$indicateur)])},
+                group = 'quantiles'
       ) %>%
-      addLegend(pal = v$pal2, 
-                values = v$ind2,
-                position = "bottomright",
-                title = ind2,
-                group = i2,
-                className = paste0("info legend ", i2),
-                labFormat = labelFormat(suffix = " ha", big.mark = " ")
-      ) %>%
-      addLegend(pal = v$pal3, 
-                values = v$zone_indic$partif,
-                position = "bottomright",
-                title = ind3,
-                group = i3,
-                className = paste0("info legend ", i3),
-                labFormat = labelFormat(suffix = " %", transform = function(x) 100 * x, big.mark = " ")
-      ) %>%
-      addLegend(pal = v$pal4, 
-                values = v$ind4,
-                position = "bottomright",
-                title = ind4,
-                group = i4,
-                className = paste0("info legend ", i4),
-                labFormat = labelFormat(suffix = " %", transform = function(x) 100 * x, big.mark = " ")
-      ) %>%
-      addLegend(pal = v$pal5, 
-                values = v$zone_indic$cos,
-                position = "bottomright",
-                title = ind5,
-                group = i5,
-                className = paste0("info legend ", i5),
-                labFormat = labelFormat(suffix = " %", transform = function(x) 100 * x, big.mark = " ")
-      ) %>%
-      addLegend(pal = v$pal6, 
-                values = v$zone_indic$sartif_par_hab,
-                position = "bottomright",
-                title = ind6,
-                group = i6,
-                className = paste0("info legend ", i6),
-                labFormat = labelFormat(suffix = " m2", big.mark = " ")
-      ) %>%
-      addLegend(pal = v$pal7, 
-                values = v$zone_indic$sartif_par_op,
-                position = "bottomright",
-                title = ind7,
-                group = i7,
-                className = paste0("info legend ", i7),
-                labFormat = labelFormat(suffix = " m2", big.mark = " ")
-      ) %>%
-      # addLegend(pal = v$pal8, 
-      #           values = v$ind8,
-      #           position = "bottomright",
-      #           title = i8,
-      #           group = i8,
-      #           className = paste0("info legend ", i8),
-      #           labFormat = labelFormat(suffix = " m2", big.mark = " ")
-      # ) %>%
-      addLegend(pal = v$pal9, 
-                values = v$zone_indic$sartif_evo_men,
-                position = "bottomright",
-                title = ind9,
-                group = i9,
-                className = paste0("info legend ", i9),
-                labFormat = labelFormat(suffix = " ménages", big.mark = " ")
-      ) %>%
-      hideGroup(c("OSM")) %>%
-      
-      # fonction qui permet de gérer l'affichage de la légende pour les basegroup : voir https://github.com/rstudio/leaflet/issues/477
-      htmlwidgets::onRender("
-      function(el, x) {
-         var updateLegend = function () {
-            var selectedGroup = document.querySelectorAll('input:checked')[0].nextSibling.innerText.substr(1);
-
-            document.querySelectorAll('.legend').forEach(a => a.hidden=true);
-            document.querySelectorAll('.legend').forEach(l => {
-               if (l.classList.contains(selectedGroup)) l.hidden=false;
-            });
-         };
-         updateLegend();
-         this.on('baselayerchange', el => updateLegend());
-      }"
-      )
+      hideGroup(c("communes", "quantiles")) %>%
+      addScaleBar(position = 'bottomleft', options = scaleBarOptions(imperial = FALSE))
   })
-  observeEvent(c(input$codeinsee, input$annee, input$id_zone), {
-    leafletProxy("carteter") %>%
-      htmlwidgets::onRender("
-      function(el, x) {
-         var updateLegend = function () {
-            var selectedGroup = document.querySelectorAll('input:checked')[0].nextSibling.innerText.substr(1);
 
-            document.querySelectorAll('.legend').forEach(a => a.hidden=true);
-            document.querySelectorAll('.legend').forEach(l => {
-               if (l.classList.contains(selectedGroup)) l.hidden=false;
-            });
-         };
-         updateLegend();
-         this.on('baselayerchange', el => updateLegend());
-      }"
-      )
-  })
   
   # tableau des indicateurs communaux
   
@@ -768,7 +601,7 @@ shinyServer(function(input, output, session) {
   }
   
   output$nomind2 <- renderText({paste0(ind2, " entre ", input$annee, " et 2017")})
-  output$nomind4 <- renderText({paste0(ind4, " entre ", input$annee, " et 2017")})
+  output$nomind3 <- renderText({paste0(ind3, " entre ", input$annee, " et 2017")})
   
   output$gauge31 <- renderPlotly({
     gauge_plot(indiv = v$com_indic$sartif, pop = v$zone_indic$sartif, suffix = " ha")
@@ -779,15 +612,15 @@ shinyServer(function(input, output, session) {
   })
   
   output$gauge33 <- renderPlotly({
-    gauge_plot(indiv = v$com_indic$partif, pop = v$zone_indic$partif, format = ".0%")
+    gauge_plot(indiv = as.numeric(v$comind3), pop = v$ind3$partif_evo, format = ".0f", suffix = " %")
   })
   
   output$gauge34 <- renderPlotly({
-    gauge_plot(indiv = as.numeric(v$comind4), pop = v$ind4$partif_evo, format = ".0%")
+    gauge_plot(indiv = v$com_indic$partif, pop = v$zone_indic$partif, format = ".1f", suffix = " %")
   })
   
   output$gauge35 <- renderPlotly({
-    gauge_plot(indiv = v$com_indic$cos, pop = v$zone_indic$cos, format = ".0%")
+    gauge_plot(indiv = v$com_indic$cos, pop = v$zone_indic$cos, format = ".0f", suffix = " %")
   })
   
   output$gauge36 <- renderPlotly({
@@ -798,11 +631,7 @@ shinyServer(function(input, output, session) {
     gauge_plot(indiv = v$com_indic$sartif_par_op, pop = v$zone_indic$sartif_par_op, suffix = " m2")
   })
   
-  # output$gauge38 <- renderPlotly({
-  #   gauge_plot(indiv = as.numeric(v$comind8), pop = v$ind8$sartif_evo_par_op)
-  # })
-  
-  output$gauge39 <- renderPlotly({
+  output$gauge38 <- renderPlotly({
     gauge_plot(indiv = v$com_indic$sartif_evo_men, pop = v$zone_indic$sartif_evo_men)
   })
   
