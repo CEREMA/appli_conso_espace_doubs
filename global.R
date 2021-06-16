@@ -1,6 +1,6 @@
 #
 # APPLI DE VISUALISATION DES ENVELOPPES BATIES DU DOUBS
-# version mise en ligne le 3 juin 2021
+# 
 #
 
 library(sf)
@@ -28,6 +28,19 @@ dindic <- dbReadTable(conn, "indicateurs")
 
 st_crs(dcommunes) = 4326
 
+# quelques corrections dans la table des zonages
+
+dzonages[dzonages$id_zone == "247000714",]$nom_zone <- "CC du Pays de Villersexel (partie Doubs)"
+dzonages[dzonages$id_zone == "247000722",]$nom_zone <- "CC du Pays d'Héricourt (partie Doubs)"
+dzonages[dzonages$id_zone == "242504496",]$nom_zone <- "CC du Plateau de Frasne et du Val de Drugeon"
+dzonages[dzonages$id_zone == "pnrhj",]$nom_zone <- "PNR Haut Jura (partie Doubs)"
+dzonages[dzonages$id_zone == "pnrph",]$nom_zone <- "PNR du Doubs Horloger"
+dzonages[dzonages$id_zone == "200041887",]$nom_zone <- "CC du Val Marnaysien (partie Doubs)"
+dzonages[dzonages$id_zone == "scot7",]$nom_zone <- "SCoT de l'Agglomération bisontine (partie Doubs)"
+dzonages[dzonages$id_zone == "scot6",]$nom_zone <- "SCoT du Doubs Central"
+dzonages <- dzonages %>% filter(id_zone != "scot8")
+
+
 # liste déroulante pour choix des communes
 
 choixcom <- dcommunes$insee_com
@@ -49,8 +62,8 @@ dcom <- dcommunes %>% select(nom_com, insee_com, surface)
 dindic <- dindic %>%
   dplyr::left_join(dcom) %>%
   mutate(sartif = senv17 + senvnd,
-         partif = 10000 * sartif / surface,
-         cos = sbati / (senv17 + senvnd),
+         partif = 1000000 * sartif / surface,
+         cos = 100*sbati / (senv17 + senvnd),
          sartif_par_hab = 10000 * sartif / p17_pop,
          occpot17 = p17_pop + p17_emplt + p17_rsec,
          occpot12 = p12_pop + p12_emplt + p12_rsec,
@@ -130,24 +143,17 @@ anneesref <- c(1968, 1975, 1982, 1990, 1999, 2007, 2012, 2017)
 
 ind1 <- "surface artificialisée par le bâti en 2017"
 ind2 <- "évolution de la surface artificialisée par le bâti"
-ind3 <- "part de la surface communale artificialisée par le bâti en 2017"
-ind4 <- "évolution relative de la surface artificialisée par le bâti"
+ind3 <- "évolution relative de la surface artificialisée par le bâti"
+ind4 <- "part de la surface communale artificialisée par le bâti en 2017"
 ind5 <- "coefficient d'emprise au sol du bâti en 2017"
 ind6 <- "surface artificialisée par habitant en 2017"
 ind7 <- "surface artificialisée par occupant potentiel en 2017"
-# ind8 <- "surface artificialisée par nouvel occupant potentiel"
-ind9 <- "nombre de nouveaux ménages par ha artificialisé pour l'habitat"
+ind8 <- "nombre de nouveaux ménages par ha artificialisé pour l'habitat"
 
-i1 <- gsub(" ", "_", ind1)
-i2 <- gsub(" ", "_", ind2)
-i3 <- gsub(" ", "_", ind3)
-i4 <- gsub(" ", "_", ind4)
-i5 <- gsub(" ", "_", ind5)
-i6 <- gsub(" ", "_", ind6)
-i7 <- gsub(" ", "_", ind7)
-# i8 <- gsub(" ", "_", ind8)
-i9 <- gsub(" ", "_", ind9)
-
+ind <- 1:8
+names(ind) <- c(ind1, ind2, ind3, ind4, ind5, ind6, ind7, ind8)
+vars <- c("sartif", "sartif_evo", "partif_evo", "partif", "cos", "sartif_par_hab", "sartif_par_op", "sartif_evo_men")
+unites <- c(" ha", " ha", " %", " %", " %", " m2", " m2", " ménages")
 
 # requetes pour tester le fonctionnement de l'appli
 ## com_date <- dbGetQuery(conn, "SELECT code_insee, datation, surface FROM env_date WHERE code_insee = '25001'")
